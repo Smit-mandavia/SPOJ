@@ -1,0 +1,120 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+#define ll long long int
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define mod 1000000007
+ 
+ 
+ 
+int main() 
+{
+    FIO; // for fast input output
+    
+    int temp=1,n,i,v,temp2=1;
+    bool flag;
+    char t;
+    string s;
+    
+    stack <char> str;
+    stack <int> val;
+    
+    val.push(0);
+    
+    
+    cin >> s;
+    n=(int)s.length();
+    
+    for(i=0;i<n;i++){
+        
+        if(s[i]==')'){
+            
+            if(i+1<n && s[i+1]>'1' && s[i+1]<='9')
+                temp=s[++i]-'0';
+            else
+                temp=1;
+            
+            do{
+                flag=true;
+                
+                t=str.top();
+                str.pop();
+                
+                switch(t){
+                    case '(': 
+                                v=val.top();
+                                val.pop();
+                                v=(v*temp)+val.top();
+                                break; 
+                    case 'C':
+                                v=val.top();
+                                v+=12*temp2;
+                                break;
+                    case 'H':  
+                                v=val.top();
+                                v+=1*temp2;
+                                break;
+                    case 'O':
+                                v=val.top();
+                                v+=16*temp2;
+                                break;
+                    default :
+                                flag=false;
+                                temp2=t-'0';    
+                }
+                
+                if(flag){
+                    temp2=1;
+                    val.pop();
+                    val.push(v);
+                }
+                
+            }  
+            while(t!='(');
+            
+        }
+        else{
+            str.push(s[i]);
+            if(s[i]=='(')
+                val.push(0);
+        }
+        
+    }
+    
+    while(!(str.empty())){
+        
+        flag=true;
+        t=str.top();
+        str.pop();
+        
+        switch(t){
+            case 'C':
+                        v=val.top();
+                        v+=12*temp2;
+                        break;
+            case 'H':  
+                        v=val.top();
+                        v+=1*temp2;
+                        break;
+            case 'O':
+                        v=val.top();
+                        v+=16*temp2;
+                        break;
+            default :
+                        flag=false;
+                        temp2=t-'0';    
+        }
+        
+        if(flag){
+                temp2=1;
+                val.pop();
+                val.push(v);
+        }
+ 
+    }
+    
+    
+    cout << val.top();
+    
+	return 0;
+}
